@@ -11,7 +11,6 @@ Wechaty Schedule allow you to easily schedule jobs for your Wechaty bots.
 ```
 $ npm install wechaty --save
 $ npm install wechaty-schedule --save
-
 ```
 
 ### Step 2: Make a tasks
