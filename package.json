@@ -1,0 +1,17 @@
+{
+  "name": "wechaty-schedule",
+  "version": "0.0.1",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "wechaty"
+  ],
+  "author": "Gcaufy (gcaufy@gmail.com)",
+  "license": "MIT",
+  "dependencies": {
+    "wechaty": "^0.13.36"
+  }
+}
