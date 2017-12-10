@@ -33,7 +33,7 @@ const Rule = {
   }
 }
 
-const timeParse = (time) => {
+const timeParse = (time, timeZone) => {
   let date = new Date(time);
   if (!isNaN(+date)) {
     return {
@@ -45,11 +45,16 @@ const timeParse = (time) => {
     return null;
   }
   let tmp = time.split(':');
-  let now = new Date();
+  let now = getDate(timeZone);
   return {
     date: new Date(now.getFullYear(), now.getMonth(), now.getDate(), tmp[0], tmp[1] || 0, tmp[2] || 0),
     everyday: true
   };
+};
+
+const getDate = (timeZone) => {
+  let gtmDate = +new Date() + new Date().getTimezoneOffset() * 60 * 1000;
+  return new Date(gtmDate + timeZone * 60 * 60 * 1000);
 };
 
 const executeTask = async function (roomName, contactName, content) {
@@ -99,7 +104,8 @@ const executeTask = async function (roomName, contactName, content) {
 const touch = (bot, config = {}) => {
   
   const DEFAULT_CONFIG = {
-    tasks: './tasks.json'
+    tasks: './tasks.json',
+    timeZone: '+8'
   };
 
   config = Object.assign({}, DEFAULT_CONFIG, config);
@@ -110,16 +116,16 @@ const touch = (bot, config = {}) => {
     
     for (let taskName in rules) {
       let rule = rules[taskName];
-      let time = timeParse(rule.time);
+      let time = timeParse(rule.time, config.timeZone);
       if (time) {
-        if (time.date - new Date() > 0) { // does not reach the schedule time
+        if (time.date - getDate(config.timeZone) > 0) { // does not reach the schedule time
           if (time.everyday && Rule.isExcuted(taskName)) {
             Rule.reset(taskName);
           }
         } else {
           // task is not excuted and time is 10 mins closed
-          if (!Rule.isExcuted(taskName) && new Date() - time.date <= 10 * 60 * 1000) {
-            console.log(`[${taskName}] - Executing task in ${new Date().toString()}`);
+          if (!Rule.isExcuted(taskName) && getDate(config.timeZone) - time.date <= 10 * 60 * 1000) {
+            console.log(`[${taskName}] - Executing task in ${getDate(config.timeZone).toString()}`);
             Rule.set(taskName);
             executeTask(rule.room, rule.contact, rule.content);
           }
