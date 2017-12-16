@@ -8,8 +8,8 @@ Wechaty Schedule allow you to easily schedule jobs for your Wechaty bots.
 
 
 ### Step 1: Install
+
 ```
-$ npm install wechaty --save
 $ npm install wechaty-schedule --save
 ```
 
