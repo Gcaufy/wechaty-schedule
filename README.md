@@ -45,13 +45,13 @@ $ vim tasks.json
 ```
 $ vim mybot.js
 
-const { Wechaty  } = require('wechaty');
+const { Wechaty } = require('wechaty');
 const WechatySechdule = require('wechaty-schedule');
 const bot = Wechaty.instance();
 
 WechatySechdule(bot, {tasks: './tasks.json'})
 .on('scan', (url, code) => console.log(`Scan QR Code to login: ${code}\n${url}`))
-.on('login',       user => console.log(`User ${user} logined`))
+.on('login', user => console.log(`User ${user} logined`))
 .init();
 ```
 
