@@ -53,6 +53,8 @@ const timeParse = (time, timeZone) => {
 };
 
 const getDate = (timeZone) => {
+  if (timeZone === undefined)
+    return new Date();
   let gtmDate = +new Date() + new Date().getTimezoneOffset() * 60 * 1000;
   return new Date(gtmDate + timeZone * 60 * 60 * 1000);
 };
@@ -60,7 +62,7 @@ const getDate = (timeZone) => {
 const executeTask = async function (roomName, contactName, content) {
   if (roomName && typeof roomName === 'string')
     roomName = [roomName];
-  if (contactName && typeof contactName === 'string') 
+  if (contactName && typeof contactName === 'string')
     contactName = [contactName];
   if (content && typeof content === 'string')
     content = [content];
@@ -102,10 +104,9 @@ const executeTask = async function (roomName, contactName, content) {
 }
 
 const touch = (bot, config = {}) => {
-  
+
   const DEFAULT_CONFIG = {
-    tasks: './tasks.json',
-    timeZone: '+8'
+    tasks: './tasks.json'
   };
 
   config = Object.assign({}, DEFAULT_CONFIG, config);
@@ -113,7 +114,7 @@ const touch = (bot, config = {}) => {
   bot.on('heartbeat', function () {
     // if rule file is changed, will get the new rule.
     let rules = Rule.fetch(config.tasks);
-    
+
     for (let taskName in rules) {
       let rule = rules[taskName];
       let time = timeParse(rule.time, config.timeZone);
