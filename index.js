@@ -103,41 +103,38 @@ const executeTask = async function (roomName, contactName, content) {
   }
 }
 
-const touch = (bot, config = {}) => {
-
-  const DEFAULT_CONFIG = {
-    tasks: './tasks.json'
-  };
-
-  config = Object.assign({}, DEFAULT_CONFIG, config);
-
-  bot.on('heartbeat', function () {
-    // if rule file is changed, will get the new rule.
-    let rules = Rule.fetch(config.tasks);
-
-    for (let taskName in rules) {
-      let rule = rules[taskName];
-      let time = timeParse(rule.time, config.timeZone);
-      if (time) {
-        if (time.date - getDate(config.timeZone) > 0) { // does not reach the schedule time
-          if (time.everyday && Rule.isExcuted(taskName)) {
-            Rule.reset(taskName);
-          }
-        } else {
-          // task is not excuted and time is 10 mins closed
-          if (!Rule.isExcuted(taskName) && getDate(config.timeZone) - time.date <= 10 * 60 * 1000) {
-            console.log(`[${taskName}] - Executing task in ${getDate(config.timeZone).toString()}`);
-            Rule.set(taskName);
-            executeTask(rule.room, rule.contact, rule.content);
-          }
-        }
-      } else {
-        console.warn(`[${taskName}] - Invalid time : "${rules[taskName].time}"`);
-      }
-    }
-  });
-
-  return bot;
+const DEFAULT_CONFIG = {
+  tasks: './tasks.json'
 };
 
-module.exports = touch;
+module.exports = function WechatySchedulePlugin () {
+
+  return function (config = {}) {
+    config = Object.assign({}, DEFAULT_CONFIG, config);
+    this.on('heartbeat', function () {
+      // if rule file is changed, will get the new rule.
+      let rules = Rule.fetch(config.tasks);
+
+      for (let taskName in rules) {
+        let rule = rules[taskName];
+        let time = timeParse(rule.time, config.timeZone);
+        if (time) {
+          if (time.date - getDate(config.timeZone) > 0) { // does not reach the schedule time
+            if (time.everyday && Rule.isExcuted(taskName)) {
+              Rule.reset(taskName);
+            }
+          } else {
+            // task is not excuted and time is 10 mins closed
+            if (!Rule.isExcuted(taskName) && getDate(config.timeZone) - time.date <= 10 * 60 * 1000) {
+              console.log(`[${taskName}] - Executing task in ${getDate(config.timeZone).toString()}`);
+              Rule.set(taskName);
+              executeTask(rule.room, rule.contact, rule.content);
+            }
+          }
+        } else {
+          console.warn(`[${taskName}] - Invalid time : "${rules[taskName].time}"`);
+        }
+      }
+    });
+  }
+}
