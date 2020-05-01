@@ -1,6 +1,6 @@
 {
   "name": "wechaty-schedule",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "",
   "main": "index.js",
   "scripts": {
@@ -23,6 +23,6 @@
     "verpub": "^0.1.2"
   },
   "readme": "ERROR: No README data found!",
-  "_id": "wechaty-schedule@0.0.2",
-  "_commitid": "1e728c2"
+  "_id": "wechaty-schedule@0.0.3",
+  "_commitid": "b1bf0bb"
 }
