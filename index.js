@@ -107,11 +107,11 @@ const DEFAULT_CONFIG = {
   tasks: './tasks.json'
 };
 
-module.exports = function WechatySchedulePlugin () {
+module.exports = function WechatySchedulePlugin (config = {}) {
+  config = Object.assign({}, DEFAULT_CONFIG, config);
 
-  return function (config = {}) {
-    config = Object.assign({}, DEFAULT_CONFIG, config);
-    this.on('heartbeat', function () {
+  return function (bot) {
+    bot.on('heartbeat', function () {
       // if rule file is changed, will get the new rule.
       let rules = Rule.fetch(config.tasks);
 
