@@ -1,5 +1,7 @@
 # Wechaty Schedule
 
+[![Wechaty Plugin Contrib](https://img.shields.io/badge/Wechaty%20Plugin-Schedule-brightgreen.svg)](https://github.com/Gcaufy/wechaty-schedule)
+[![Powered by Wechaty](https://img.shields.io/badge/Powered%20By-Wechaty-brightgreen.svg)](https://github.com/Wechaty/wechaty)
 
 Wechaty Schedule allow you to easily schedule jobs for your Wechaty bots.
 
